@@ -1,5 +1,5 @@
 // logger.ts
-import pino from "pino";
+import { pino } from "pino";
 import process from "node:process";
 
 export const logger = pino({

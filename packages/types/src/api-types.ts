@@ -15,18 +15,12 @@ export const apiMeResponseSchema = z.object({
 // This ensures the type and the runtime validation are always in sync. [1, 4]
 export type ApiMeResponse = z.infer<typeof apiMeResponseSchema>;
 
-/**
- * Parses and validates a JSON structure against the ApiMeResponse schema.
- *
- * @param data - The unknown data to parse. Can be a JSON string or an object.
- * @returns The validated and typed ApiMeResponse object.
- * @throws {ZodError} If the data is invalid.
- */
-export function parseApiMeResponse(data: any): ApiMeResponse {
-  // If the input is a string, attempt to parse it as JSON first. [3]
-  const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-
+export function asApiMeResponse(json: unknown): ApiMeResponse {
   // The .parse() method will throw an error if validation fails. [1]
-  return apiMeResponseSchema.parse(parsedData);
+  return apiMeResponseSchema.parse(json);
+}
+export function assertApiMeResponse(json: unknown): asserts json is ApiMeResponse {
+  // The .parse() method will throw an error if validation fails. [1]
+  asApiMeResponse(json);
 }
 

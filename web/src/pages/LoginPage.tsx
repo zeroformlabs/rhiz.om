@@ -8,7 +8,7 @@ const LoginPage = () => {
       <h1>rhiz.om</h1>
       <p>You&apos;re here. That&apos;s enough to begin.</p>
       <p>This is a place to pause, notice, and connect.</p>
-      <button type='button' onClick={() => loginWithRedirect()}>Log In</button>
+      <button type='button' onClick={() => void loginWithRedirect()}>Log In</button>
     </div>
   );
 };
