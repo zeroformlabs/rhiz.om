@@ -1,16 +1,14 @@
-// api/logger.ts
+// logger.ts
 import pino from 'pino';
-import pretty from 'pino-pretty';
+import process from "node:process";
 
-// pino-pretty is the transport. We instantiate it with our options.
-const stream = pretty({
-  colorize: true,
-  levelFirst: true,
-  translateTime: 'SYS:standard',
+export const logger = pino({
+  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
+  transport: process.env.NODE_ENV === 'development'
+    ? {
+        target: 'pino-pretty',
+        options: { colorize: true, translateTime: 'SYS:standard' }
+      }
+    : undefined,
+  redact: ['req.headers.authorization', 'password']
 });
-
-// We then pass the instantiated stream directly to pino.
-// This avoids the dynamic 'target' resolution that was failing.
-const logger = pino(stream);
-
-export default logger;

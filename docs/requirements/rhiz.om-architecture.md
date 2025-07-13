@@ -45,7 +45,7 @@ React 19 SPA  ─┬─>  /api/*  Edge function (serve.ts)
 ```
 rhiz.om/
 ├─ api/
-│  ├─ serve.ts            // entrypoint => serve(router)
+│  ├─ serve.ts            // entrypoint => serve(router) - use Deno.serve + URLPattern
 │  ├─ routes/
 │  │  ├─ auth.ts          // /api/auth/*
 │  │  ├─ uploads.ts       // /api/uploads/*

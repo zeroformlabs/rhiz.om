@@ -1,10 +1,28 @@
-import pino from 'pino';
+// browser/logger.ts
+import pino from 'pino/browser'
 
-const logger = pino({
+export const logger = pino({
   browser: {
-    asObject: true
-  },
-  level: 'debug',
-});
+    asObject: true,          // keep it JSON
+    transmit: {
+      level: 'info',         // threshold you care about
+      send(_level, logEvent) {
+        const blob = new Blob(
+          [JSON.stringify(logEvent)], 
+          { type: 'application/json' }
+        )
 
-export default logger;
+        // 1 kB? Use Beacon (fires even on page-hide/unload)
+        if (blob.size < 1024 && navigator.sendBeacon) {
+          navigator.sendBeacon('/api/log', blob)
+        } else {
+          fetch('/api/log', { 
+            method: 'POST', 
+            body: blob, 
+            keepalive: true          // survives tab close
+          }).catch(() => {/* swallow network noise */})
+        }
+      }
+    }
+  }
+})

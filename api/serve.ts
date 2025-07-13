@@ -1,10 +1,16 @@
-// In api/serve.ts
-// import { serve } from "https://deno.land/std@0.140.0/http/server.ts"; // <-- REMOVE
-import logger from "./logger.ts";
+import { logger } from "./logger.ts";
+import { handleLogRequest } from "./routes/log.ts";
 
 logger.info("rhiz.om server started");
 
-// The new, recommended way to start a Deno server:
-Deno.serve((_req) => {
+Deno.serve((request: Request) => {
+  const url = new URL(request.url);
+
+  if (new URLPattern({ pathname: "/api/log" }).test(url)) {
+    if (request.method === "POST") {
+      return handleLogRequest(request);
+    }
+  }
+
   return new Response("Hello, world!\n");
 });
