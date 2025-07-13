@@ -4,7 +4,7 @@
     "fmt": "deno fmt"
   },
   "workspace": [
-    "packages/*"
+    "./packages/types"
   ],
   "importMap": "./import_map.json",
   "nodeModulesDir": "auto",

@@ -1,5 +1,5 @@
 import { logger as rootLogger } from "../logger-server.ts";
-import { LogEventSchema } from "../../packages/types/src/log-types.ts";
+import { LogEventSchema } from "@rhiz.om/types/log-types.ts";
 import { ZodError } from "zod";
 
 const DEBUG_LOGGING = false;

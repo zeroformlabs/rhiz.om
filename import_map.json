@@ -1,8 +1,11 @@
 {
   "imports": {
-    "pino": "https://esm.sh/pino@9.7.0",
-    "pino-pretty": "https://esm.sh/pino-pretty@13.0.0",
-    "zod": "https://esm.sh/zod@3.23.8",
+    "hono": "jsr:@hono/hono@^4.8.0",
+    "hono/": "jsr:@hono/hono@^4.8.0/",
+    "jose": "https://deno.land/x/jose@v5.6.3/index.ts",
+    "pino": "npm:pino@^9.7.0",
+    "pino-pretty": "npm:pino-pretty@^13.0.0",
+    "zod": "npm:zod@^3.23.8",
     "@rhiz.om/types/": "./packages/types/src/"
   }
 }
