@@ -1,8 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import SpacePage from './pages/SpacePage';
-import ProtectedRoute from './components/ProtectedRoute'; // This will be created next
-import { useAuth0 } from ' @auth0/auth0-react';
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import SpacePage from "./pages/SpacePage";
+import ProtectedRoute from "./components/ProtectedRoute"; // This will be created next
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
   const { isLoading } = useAuth0();
