@@ -7,5 +7,10 @@
     "packages/*"
   ],
   "importMap": "./import_map.json",
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+    "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    }
+  }
 }
