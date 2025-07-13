@@ -1,0 +1,13 @@
+{
+  "default_agent": "gemini",
+  "agents": {
+    "gemini": {
+      "model": "gemini-1.5-pro",
+      "system_prompt_wrapper": "You are a world-class software engineering assistant. Strictly follow all instructions.\n---\n{prompt_content}"
+    },
+    "claude": {
+      "model": "claude-3-opus-20240229",
+      "system_prompt_wrapper": "You are a helpful AI assistant. Here is your task.\n<instructions>\n{prompt_content}\n</instructions>"
+    }
+  }
+}
