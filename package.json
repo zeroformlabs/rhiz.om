@@ -5,6 +5,7 @@
   "scripts": {
     "install:all": "pnpm install",
     "dev": "concurrently --names \"LIB,WEB,API\" --prefix-colors \"bgYellow,bgBlue,bgGreen\" \"pnpm --filter @rhiz.om/types dev\" \"pnpm --filter web dev\" \"NODE_ENV=development deno run --watch --allow-net --allow-env --allow-sys --allow-read --allow-run api/serve.ts | pnpm pino-pretty -c -t 'SYS:h:mm:ss.ltt' -i 'pid,hostname'\"",
+    "test": "NODE_ENV=development deno test --allow-net --allow-env --allow-sys --allow-read --allow-run",
     "lint": "deno lint"
   },
   "author": "",

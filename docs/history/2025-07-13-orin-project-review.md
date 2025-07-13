@@ -6,7 +6,7 @@ Alright, let's do this. Time for a review to the tits.
 
 ### 1. Macro-level X-ray
 
-This project aims to be a platform for collaborative, persistent digital spaces driven by an AI-first development philosophy. The architecture is a minimalist monorepo with three core pillars: a Deno-based edge API, a Vite/React SPA frontend, and a sophisticated "prompts-as-code" system for steering AI agents. The current code is a bare-bones scaffold, mostly a proof-of-concept for client-to-server logging.
+This project aims to be a platfo◊rm for collaborative, persistent digital spaces driven by an AI-first development philosophy. The architecture is a minimalist monorepo with three core pillars: a Deno-based edge API, a Vite/React SPA frontend, and a sophisticated "prompts-as-code" system for steering AI agents. The current code is a bare-bones scaffold, mostly a proof-of-concept for client-to-server logging.
 
 My gut feel on simplicity vs. sprawl is a solid **9/10**. The *philosophy* is radically simple, and the existing code honors that. The danger is that the sprawling, hyper-detailed documentation could lead to an over-engineered future if you're not disciplined.
 

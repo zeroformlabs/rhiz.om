@@ -1,31 +1,34 @@
 // browser/logger.ts
-import pino from 'pino/browser'
+import pino from "pino/browser";
+
+const DEBUG_LOGGING = false;
 
 export const logger = pino({
   browser: {
-    asObject: true,          // keep it JSON
+    asObject: true, // keep it JSON
     transmit: {
-      level: 'info',         // threshold you care about
+      level: "info", // threshold you care about
       send(_level, logEvent) {
-        
-        console.log("transmitting log to server", logEvent)
+        if (DEBUG_LOGGING) {
+          console.log("transmitting log to server", logEvent);
+        }
 
         const blob = new Blob(
-          [JSON.stringify(logEvent)], 
-          { type: 'application/json' }
-        )
+          [JSON.stringify(logEvent)],
+          { type: "application/json" },
+        );
 
         // 1 kB? Use Beacon (fires even on page-hide/unload)
         if (blob.size < 1024 && navigator.sendBeacon) {
-          navigator.sendBeacon('/api/log', blob)
+          navigator.sendBeacon("/api/log", blob);
         } else {
-          fetch('/api/log', { 
-            method: 'POST', 
-            body: blob, 
-            keepalive: true          // survives tab close
-          }).catch(() => {/* swallow network noise */})
+          fetch("/api/log", {
+            method: "POST",
+            body: blob,
+            keepalive: true, // survives tab close
+          }).catch(() => {/* swallow network noise */});
         }
-      }
-    }
-  }
-})
+      },
+    },
+  },
+});
