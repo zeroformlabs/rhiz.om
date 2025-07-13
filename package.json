@@ -8,7 +8,7 @@
     "test:backend": "NODE_ENV=development deno test --allow-net --allow-env --allow-sys --allow-read --allow-run api/",
     "test:frontend": "pnpm --filter web test",
     "test": "pnpm run test:backend && pnpm run test:frontend",
-    "lint": "deno lint"
+    "lint": "deno lint && pnpm --filter web lint && pnpm --filter @rhiz.om/types lint"
   },
   "author": "",
   "license": "ISC",
