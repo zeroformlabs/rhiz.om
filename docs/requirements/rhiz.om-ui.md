@@ -1,20 +1,6 @@
 # rhiz.om User-Interface Layout — Orin-Style Reference (v 0.1.1)
 *Fully elaborated—captures every point verbatim or re-expressed; no new features introduced.*
 
----
-
-## Login Page
-
-Friendlly greeting message:
-        You’re here. That's enough to begin.</p>
-        <p>This is a place to pause, notice, and connect.</p>
-        <p>Bring your attention. It opens more than you might expect.
-
-OAuth login buttons for Google, GitHub, Apple, and Facebook.
-
-Natural background photographs, fading from one to another.
-
-User logs in, gets default id
 
 ---
 
@@ -197,11 +183,6 @@ User logs in, gets default id
 
 Logout
 
-## Config Panel
-
-Allows configuration of any properties of the currently focused entity in a nice form using standard UI widgets.  Form should be dynanmically generated based on properties of object.
-
-Only owner or SUPERUSER (special property can be set on @beings) can see and edit the properties.
 
 ## 6 Unresolved / Open Design Tasks
 

@@ -116,6 +116,8 @@ Handler: `logger.child({ browser: true }).[level](payload)`.
 
 If a server stream is already writing to an Intention, switch its status to `"error"` and append the JSON content-island in-place.
 
+Finally, if no better mechanism is available, the user should still be notified of the errro: an error "Toast" or full screen overlay (depending on the severity of the error) can be used.
+
 ---
 
 ### 6 Operational Guidelines

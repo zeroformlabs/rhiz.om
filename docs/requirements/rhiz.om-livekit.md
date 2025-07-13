@@ -70,6 +70,8 @@ Attachment API from docs ([LiveKit Docs][5]).
 
 When a video track is muted/unpublished (`TrackMuted`, `TrackUnpublished`), detach and restore the static avatar.
 
+Error handling - ensure all LiveKit errors are surfaced to the user, either by rendering an avatar or video preview as a red error, or using a generic error handling mechanism.
+
 ---
 
 #### 6  Events to handle

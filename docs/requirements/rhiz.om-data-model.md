@@ -23,11 +23,20 @@ export type ExtId = {
 /** Rich, recursively-nestable content tree. */
 export type ContentNode =
   | string
-  | {
-      type: string;
-      props?: Record<string, any>;
-      content?: ContentNode[];
-    };
+  | ContentDataIsland;
+
+export type DataIslandType = 'error'; // more over time.
+
+/*
+ Structured data island: gets rendered as pill by default.
+ If has content, gets rendered using some nestable clear highlighting by default.
+ Specific types may have specific renderers.
+*/
+export interface ContentDataIsland {
+  type: string;
+  props?: Record<string, any>;
+  content?: ContentNode[];
+}
 
 /*────────────────────────── BEING (noun) ──────────────────────────*/
 
