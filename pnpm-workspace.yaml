@@ -1,5 +1,6 @@
 packages:
   - web
+  - packages/types
 
 onlyBuiltDependencies:
   - esbuild

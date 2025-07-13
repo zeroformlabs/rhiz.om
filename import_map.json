@@ -1,6 +1,8 @@
 {
   "imports": {
     "pino": "https://esm.sh/pino@9.7.0",
-    "pino-pretty": "https://esm.sh/pino-pretty@13.0.0"
+    "pino-pretty": "https://esm.sh/pino-pretty@13.0.0",
+    "zod": "https://esm.sh/zod@3.23.8",
+    "@rhiz.om/types/": "./packages/types/src/"
   }
 }

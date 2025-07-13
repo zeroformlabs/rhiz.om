@@ -1,4 +1,4 @@
-import { logger as rootLogger } from "./logger.ts";
+import { logger as rootLogger } from "./logger-server.ts";
 import { handleLogRequest } from "./routes/log.ts";
 
 const logger = rootLogger.child({ name: "serve" });
