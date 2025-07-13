@@ -9,7 +9,9 @@
     "test:frontend": "pnpm --filter web test",
     "test": "pnpm run test:backend && pnpm run test:frontend",
     "lint": "deno lint && pnpm --filter web lint && pnpm --filter @rhiz.om/types lint",
-    "typecheck": "deno check api/ && pnpm --filter @rhiz.om/types run build && pnpm --filter web run build"
+    "typecheck": "deno check api/ && pnpm --filter @rhiz.om/types run build && pnpm --filter web run build",
+    "validate": "pnpm run lint && pnpm run typecheck && pnpm run test",
+    "ci": "pnpm install --frozen-lockfile && pnpm run validate && pnpm run build"
   },
   "author": "",
   "license": "ISC",
