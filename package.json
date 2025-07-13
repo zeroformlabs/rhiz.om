@@ -4,7 +4,7 @@
   "description": "Root project orchestrator for Rhiz.om",
   "scripts": {
     "install:all": "pnpm install",
-    "dev": "concurrently --names \"WEB,API\" --prefix-colors \"bgBlue,bgGreen\" \"pnpm --filter web dev\" \"NODE_ENV=development deno run --watch --allow-net --allow-env --allow-sys --allow-read --allow-run api/serve.ts\"",
+    "dev": "concurrently --names \"WEB,API\" --prefix-colors \"bgBlue,bgGreen\" \"pnpm --filter web dev\" \"NODE_ENV=development deno run --watch --allow-net --allow-env --allow-sys --allow-read --allow-run api/serve.ts | pnpm pino-pretty -c -t 'SYS:h:mm:ss.ltt' -i 'pid,hostname'\"",
     "lint": "deno lint"
   },
   "author": "",

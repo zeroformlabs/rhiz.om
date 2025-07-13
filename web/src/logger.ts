@@ -7,6 +7,9 @@ export const logger = pino({
     transmit: {
       level: 'info',         // threshold you care about
       send(_level, logEvent) {
+        
+        console.log("transmitting log to server", logEvent)
+
         const blob = new Blob(
           [JSON.stringify(logEvent)], 
           { type: 'application/json' }
