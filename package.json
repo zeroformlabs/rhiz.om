@@ -5,13 +5,15 @@
   "scripts": {
     "install:all": "pnpm install",
     "dev": "concurrently --names \"LIB,WEB,API\" --prefix-colors \"bgYellow,bgBlue,bgGreen\" \"pnpm --filter @rhiz.om/types dev\" \"pnpm --filter web dev\" \"NODE_ENV=development deno run --watch --allow-net --allow-env --allow-sys --allow-read --allow-run api/serve.ts | pnpm pino-pretty -c -t 'SYS:h:mm:ss.ltt' -i 'pid,hostname'\"",
-    "test": "NODE_ENV=development deno test --allow-net --allow-env --allow-sys --allow-read --allow-run",
+    "test:backend": "NODE_ENV=development deno test --allow-net --allow-env --allow-sys --allow-read --allow-run api/",
+    "test:frontend": "pnpm --filter web test",
+    "test": "pnpm run test:backend && pnpm run test:frontend",
     "lint": "deno lint"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.2.0",
-    " @rhiz.om/types": "workspace:*"
+    "@rhiz.om/types": "workspace:*"
   }
 }
