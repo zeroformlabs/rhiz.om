@@ -4,7 +4,7 @@
   "description": "Root project orchestrator for Rhiz.om",
   "scripts": {
     "install:all": "pnpm install",
-    "dev": "concurrently --names \"WEB,API\" --prefix-colors \"bgBlue,bgGreen\" \"pnpm --filter web dev\" \"deno task dev\""
+    "dev": "concurrently --names \"WEB,API\" --prefix-colors \"bgBlue,bgGreen\" \"pnpm --filter web dev\" \"deno run --watch --allow-net --allow-env --allow-sys api/serve.ts\""
   },
   "author": "",
   "license": "ISC",
