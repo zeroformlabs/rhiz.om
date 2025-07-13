@@ -1,14 +1,15 @@
 // browser/logger.ts
-import pino from "pino/browser";
+import pino, { Logger } from "pino";
+
 
 const DEBUG_LOGGING = false;
 
-export const logger = pino({
+export const logger: Logger = pino({
   browser: {
     asObject: true, // keep it JSON
     transmit: {
       level: "info", // threshold you care about
-      send(_level, logEvent) {
+      send(_level: string, logEvent: Record<string, unknown>) {
         if (DEBUG_LOGGING) {
           console.log("transmitting log to server", logEvent);
         }

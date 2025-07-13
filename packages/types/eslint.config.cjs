@@ -1,48 +1,64 @@
-const globals = require("globals");
-const pluginJs = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-const pluginPrettierRecommended = require("eslint-plugin-prettier/recommended");
+// @ts-check
 
-module.exports = [
-  // Global ignores
+const globals = require("globals");
+const tseslint = require("typescript-eslint");
+const pluginJs = require("@eslint/js");
+const pluginReactRecommended = require("eslint-plugin-react/configs/recommended.js");
+const pluginReactHooks = require("eslint-plugin-react-hooks");
+const pluginJsxA11y = require("eslint-plugin-jsx-a11y");
+const pluginReactRefresh = require("eslint-plugin-react-refresh");
+
+module.exports = tseslint.config([
+  // 1. Global ignores
   {
-    ignores: ["dist", "node_modules"],
+    ignores: ["dist", "node_modules", "eslint.config.cjs"],
   },
-  // Configuration for JavaScript/CommonJS files (like this config file itself)
+
+  // 2. Base configuration for all JavaScript/TypeScript files
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
+  
+  // 3. Configuration for React
   {
-    files: ["**/*.{js,mjs,cjs}"],
+    ...pluginReactRecommended,
+    files: ["src/**/*.{ts,tsx}"],
     languageOptions: {
+      ...pluginReactRecommended.languageOptions,
       globals: {
-        ...globals.node,
-        ...globals.es2020,
+        ...globals.browser,
       },
     },
-    ...pluginJs.configs.recommended,
-  },
-  // Configuration for TypeScript files
-  {
-    files: ["src/**/*.ts"],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        ecmaVersion: "latest",
-        sourceType: "module",
-        project: ["./tsconfig.json"],
-        tsconfigRootDir: __dirname,
-      },
-      globals: {
-        ...globals.node,
-        ...globals.es2020,
+    settings: {
+      react: {
+        version: "detect", // Automatically detect React version
       },
     },
-    ...tseslint.configs.recommended,
+  },
+
+  // 4. Custom rules and plugins for the project
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    plugins: {
+      "react-hooks": pluginReactHooks,
+      "jsx-a11y": pluginJsxA11y,
+      "react-refresh": pluginReactRefresh,
+    },
     rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { argsIgnorePattern: "^", varsIgnorePattern: "^" },
-      ],
+      ...pluginReactHooks.configs.recommended.rules,
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+      "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
     },
   },
-  // Prettier integration (applies to all files)
-  pluginPrettierRecommended,
-];
+  
+  // 5. TypeScript Parser Configuration
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.json" ],
+      },
+    },
+  },
+]);
