@@ -16,7 +16,7 @@
 | Runtime       | Deno           | **2.4.1** (released 2025-07-08) ([Deno][1])                     | Native TS, <1 ms cold-start, zero config on Deploy. |
 | Edge host     | Deno Deploy    | Free tier (1 M req/100 GB)                                      | Cheapest path to global isolates.                   |
 | Front-end     | React          | **19.1.0** (2025-03-28) ([X (formerly Twitter)][2])             | Stable Actions API, huge mind-share.                |
-| Bundler / dev | Vite           | **7.0.2** (2025-06-24) ([vitejs][3])                            | Fastest HMR; plug-ins for Tailwind & React.         |
+| Bundler / dev | Vite           | **7.0.4**) ([vitejs][3])                            | Fastest HMR; plug-ins for Tailwind & React.         |
 | CSS engine    | Tailwind CSS   | **4.1.11** (latest patch) ([GitHub][4])                         | OKLCH palette, 5× faster builds.                    |
 | UI kit        | Flowbite       | **3.1.2** (upgrades to Tailwind 4) ([GitHub][5], [Flowbite][6]) |                                                     |
 | React wrapper | flowbite-react | **0.11.8** (published “last month”) ([npm][7])                  |                                                     |
