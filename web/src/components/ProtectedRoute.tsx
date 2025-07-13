@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-interface ProtectedRouteProps = {
+interface ProtectedRouteProps {
   children: React.ReactNode;
 };
 

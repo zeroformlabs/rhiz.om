@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 
+import { ApiMeResponse } from "@rhizom/types/api-types";
+
 const SpacePage = () => {
   const { user, logout, getAccessTokenSilently } = useAuth0();
 
@@ -12,7 +14,7 @@ const SpacePage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
+      const data = (await response.json()) as ApiMeResponse;
       console.log("API Response:", data);
       alert("Check the console for the API response.");
     } catch (e) {
