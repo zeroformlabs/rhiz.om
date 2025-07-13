@@ -6,7 +6,6 @@ const pluginJs = require("@eslint/js");
 const pluginReactRecommended = require("eslint-plugin-react/configs/recommended.js");
 const pluginReactHooks = require("eslint-plugin-react-hooks");
 const pluginJsxA11y = require("eslint-plugin-jsx-a11y");
-const pluginPrettier = require("eslint-plugin-prettier");
 const pluginReactRefresh = require("eslint-plugin-react-refresh");
 
 module.exports = tseslint.config([
@@ -44,14 +43,12 @@ module.exports = tseslint.config([
       "react-hooks": pluginReactHooks,
       "jsx-a11y": pluginJsxA11y,
       "react-refresh": pluginReactRefresh,
-      "prettier": pluginPrettier,
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
-      "prettier/prettier": "error", // Report Prettier errors as ESLint errors
     },
   },
   
