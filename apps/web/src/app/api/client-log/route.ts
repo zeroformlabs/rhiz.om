@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const { level, msg, context, ...rest } = logEntry;
 
     // Use the server-side Winston logger to process the client log
-    logger.log(level, msg, { ...rest, ...context });
+    logger.log(level, msg, { ...rest, context });
 
     return NextResponse.json({ status: 'ok' });
   } catch (error: any) {
