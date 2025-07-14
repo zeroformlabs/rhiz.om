@@ -1,0 +1,17 @@
+{
+  "name": "@rhiz.om/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@rhiz.om/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "prisma": "^6.11.1"
+  }
+}
