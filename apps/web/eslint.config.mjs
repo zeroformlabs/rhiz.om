@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-    files: ["src/components/ClientLogger.tsx"],
+    files: ["src/components/ClientLogger.tsx", "src/app/api/client-log/route.ts"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
     },

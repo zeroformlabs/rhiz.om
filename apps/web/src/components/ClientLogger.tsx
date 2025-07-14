@@ -1,52 +1,53 @@
 "use client";
 
 import { useEffect } from 'react';
-import { createLogger, format, transports } from 'winston';
-import Transport from 'winston-transport';
-
-// Custom Winston Transport to send logs to the server
-class ServerTransport extends Transport {
-  constructor(opts?: Transport.TransportStreamOptions) {
-    super(opts);
-  }
-
-  log(info: any, callback: () => void) {
-    // Send log to server
-    fetch('/api/log', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ts: Date.now(),
-        level: info.level,
-        msg: info.message,
-        browser: true,
-        context: info.meta,
-      }),
-    }).catch(err => console.error('Failed to send log to server:', err));
-
-    callback();
-  }
-}
-
-const clientLogger = createLogger({
-  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
-  format: format.json(), // Use JSON format for sending to server
-  transports: [
-    new transports.Console({
-      format: format.combine(
-        format.colorize(),
-        format.simple()
-      )
-    }),
-    new ServerTransport({ level: 'info' }) // Send info, warn, error to server
-  ],
-});
 
 export default function ClientLogger() {
   useEffect(() => {
-    clientLogger.info("rhiz.om client started");
+    console.info("rhiz.om client started");
+
+    // Function to send logs to the server
+    const sendLogToServer = (level: string, message: string, meta?: any) => {
+      fetch('/api/client-log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ts: Date.now(),
+          level,
+          msg: message,
+          browser: true,
+          context: meta,
+        }),
+      }).catch(err => console.error('Failed to send log to server:', err));
+    };
+
+    // Override console methods to also send to server
+    const originalConsoleInfo = console.info;
+    console.info = (message?: any, ...optionalParams: any[]) => {
+      originalConsoleInfo(message, ...optionalParams);
+      sendLogToServer('info', message, optionalParams);
+    };
+
+    const originalConsoleWarn = console.warn;
+    console.warn = (message?: any, ...optionalParams: any[]) => {
+      originalConsoleWarn(message, ...optionalParams);
+      sendLogToServer('warn', message, optionalParams);
+    };
+
+    const originalConsoleError = console.error;
+    console.error = (message?: any, ...optionalParams: any[]) => {
+      originalConsoleError(message, ...optionalParams);
+      sendLogToServer('error', message, optionalParams);
+    };
+
+    // Clean up overrides on component unmount
+    return () => {
+      console.info = originalConsoleInfo;
+      console.warn = originalConsoleWarn;
+      console.error = originalConsoleError;
+    };
   }, []);
 
   return null;
