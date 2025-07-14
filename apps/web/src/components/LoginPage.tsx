@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import Image from "next/image";
+import { FaGoogle } from "react-icons/fa6";
 
 export function LoginPage() {
   return (
@@ -22,32 +22,10 @@ export function LoginPage() {
             onClick={() => signIn("google")}
             className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-gray-900 bg-white hover:bg-gray-100"
           >
-            <Image src="/google.svg" alt="Google" width={20} height={20} className="mr-2" />
+            <FaGoogle className="mr-2" />
             Sign in with Google
           </button>
-          <button
-            onClick={() => signIn("github")}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gray-800 hover:bg-gray-700"
-          >
-            <Image src="/github.svg" alt="GitHub" width={20} height={20} className="mr-2 invert" />
-            Sign in with GitHub
-          </button>
-          {/* Apple and Facebook require more setup (e.g., Apple Developer Program, Facebook App)
-              For scaffolding, we'll include placeholders. */}
-          <button
-            onClick={() => signIn("apple")}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-black hover:bg-gray-900"
-          >
-            <Image src="/apple.svg" alt="Apple" width={20} height={20} className="mr-2 invert" />
-            Sign in with Apple
-          </button>
-          <button
-            onClick={() => signIn("facebook")}
-            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-          >
-            <Image src="/facebook.svg" alt="Facebook" width={20} height={20} className="mr-2" />
-            Sign in with Facebook
-          </button>
+          
         </div>
       </div>
     </div>
