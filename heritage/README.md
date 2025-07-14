@@ -1,5 +1,7 @@
 # Rhiz.om
 
+> **THis is dead code -- a previous architecture**
+
 Rhiz.om is a platform for creating collaborative, persistent digital spaces. It integrates real-time chat, video conferencing, and a sophisticated AI agent system to foster deep, context-aware interactions.
 
 ---

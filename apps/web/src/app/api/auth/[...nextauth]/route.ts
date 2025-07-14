@@ -1,10 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { type AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import AppleProvider from "next-auth/providers/apple";
 import FacebookProvider from "next-auth/providers/facebook";
+import logger from '@rhiz.om/shared/utils/logger';
 
-const authOptions = {
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -25,6 +26,23 @@ const authOptions = {
   ],
   pages: {
     signIn: "/login",
+  },
+  events: {
+    signIn: ({ user }) => {
+      logger.info(`User signed in: ${user.email}`);
+    },
+    signOut: ({ token }) => {
+      logger.info(`User signed out: ${token.email}`);
+    },
+    createUser: ({ user }) => {
+      logger.info(`User created: ${user.email}`);
+    },
+    linkAccount: ({ user }) => {
+      logger.info(`Account linked: ${user.email}`);
+    },
+    session: ({ session }) => {
+      logger.info(`Session created for user: ${session.user?.email}`);
+    },
   },
 };
 

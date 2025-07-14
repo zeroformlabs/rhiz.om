@@ -9,9 +9,9 @@
 | # | Principle                                                                                                                                                                                                                                            |
 | - | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1 | **Make bugs loud.** If an exception would leave the system in an indeterminate state, let the boundary crash—never hide it.                                                                                                                          |
-| 2 | **Single, structured stream.** Every event—browser, API, worker—terminates in the same JSON-ND Pino log on the server.                                                                                                                               |
+| 2 | **Single, structured stream.** Every event—browser, API, worker—terminates in the same JSON-ND Winston log on the server.                                                                                                                               |
 | 3 | **Zero-friction DX.** Pretty, colourised dev output; JSON in prod so containers can pipe straight to Loki, Datadog, CloudWatch, etc.                                                                                                                 |
-| 4 | **Context everywhere.** Use Pino **child loggers** by module/request/component; tags are automatic, overhead is negligible. ([Better Stack][1], [GitHub][2])                                                                                         |
+| 4 | **Context everywhere.** Use Winston **child loggers** by module/request/component; tags are automatic, overhead is negligible.                                                                                         |
 | 5 | **User clarity.** Surface errors either (a) via `<ErrorBoundary>` fallbacks, or (b) by persisting a **“error intention”** that contains a JSON content-island describing the failure.  |
 
 ---
@@ -20,13 +20,11 @@
 
 | Runtime            | Package              | Min Version      | Notes                                                             |
 | ------------------ | -------------------- | ---------------- | ----------------------------------------------------------------- |
-| Node/Deno (server) | `pino`               | `^9.2`           | Current major → maintained & OTEL-friendly ([GitHub][5])          |
-|                    | `pino-pretty`        | `^10` (dev only) | Colourised console ([Better Stack][1])                            |
-|                    | `pino-http`          | `^9`             | Auto-wraps HTTP/WS                                                |
-| Browser            | `pino/browser`       | `^9`             | Same API                                                          |
-|                    | `pino-transmit-http` | `^3`             | Batches logs to `/api/log` using `sendBeacon/fetch` ([GitHub][6]) |
+| Node/Deno (server) | `winston`            | `^3.17`          | Current major → maintained & flexible                               |
+|                    | `winston-transport`  | `^1.0`           | Base class for custom transports                                    |
+| Browser            | `winston-browser`    | `^1.0`           | Browser-compatible Winston logger                                   |
 
-> **Transport threading.** All heavy log processing must run in a worker via `pino.transport()`—per core recommendation. ([GitHub][5])
+> **Transport threading.** All heavy log processing should be handled asynchronously via Winston transports.
 
 ---
 
@@ -36,16 +34,18 @@
 
 ```ts
 // logger.ts
-import pino from 'pino';
+import winston from 'winston';
 
-export const logger = pino({
+export const logger = winston.createLogger({
   level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
-  transport: process.env.NODE_ENV === 'development'
-    ? {
-        target: 'pino-pretty',
-        options: { colorize: true, translateTime: 'SYS:standard' }
-      }
-    : undefined,
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+  ),
+  transports: [
+    new winston.transports.Console()
+  ],
   redact: ['req.headers.authorization', 'password']
 });
 ```
@@ -60,25 +60,22 @@ export const logger = pino({
 
 #### 3.2 HTTP & WebSocket
 
-`pino-http` attaches `req.log` / `socket.log` (pre-tagged with `reqId`, `userId`, etc.).
+For HTTP & WebSocket logging, integrate Winston with appropriate middleware (e.g., `express-winston` for Express).
 
 #### 3.3 Browser Logger
 
 ```ts
-import pino from 'pino/browser';
-import transmit from 'pino-transmit-http';
+import { createLogger } from 'winston';
+import { WinstonBrowserTransport } from 'winston-browser';
 
-export const log = pino({
-  browser: {
-    transmit: {
-      level: 'error',            // ship only errors by default
-      send: transmit({
-        url: '/api/log',
-        debounce: 1_000,
-        sendBeacon: true
-      })
-    }
-  }
+export const log = createLogger({
+  transports: [
+    new WinstonBrowserTransport({
+      level: 'error', // ship only errors by default
+      endpoint: '/api/log',
+      interval: 1000, // Batch logs every 1 second
+    }),
+  ],
 });
 ```
 
@@ -87,12 +84,12 @@ export const log = pino({
 | Field     | Type       | Notes                  |
 | --------- | ---------- | ---------------------- |
 | `ts`      | `number`   | Epoch ms               |
-| `level`   | Pino level | `'error'`, `'warn'`, … |
+| `level`   | Winston level | `'error'`, `'warn'`, … |
 | `msg`     | `string`   | Human message          |
 | `browser` | `true`     | Fixed flag             |
 | `context` | `object`   | Arbitrary              |
 
-Handler: `logger.child({ browser: true }).[level](payload)`.
+Handler: `logger.child({ browser: true }).log(payload.level, payload.msg, payload.context)`.
 
 ---
 
@@ -127,7 +124,7 @@ Finally, if no better mechanism is available, the user should still be notified 
 | Rotation & retention | Leave to container/cluster log driver; harvest stdout/stderr.                                    |
 | Sampling             | If R2 egress grows, raise browser transmit level to `'fatal'` or sample `info` at 1 %.           |
 | Alerting             | Aggregator rules on `level >= error`; optionally wire OpenTelemetry IDs for cross-trace linking. |
-| Security             | Use Pino `redact` to strip PHI & secrets.                                                        |
+| Security             | Use Winston's `format.json` and custom formatters to redact PHI & secrets.                                                        |
 
 ---
 
@@ -135,18 +132,15 @@ Finally, if no better mechanism is available, the user should still be notified 
 
 ```bash
 # Server
-deno add npm:pino npm:pino-pretty npm:pino-http         # or: npm i …
+npm install winston
 
 # Client
-npm i pino pino-transmit-http
+npm install winston winston-browser
 ```
 
 1. `import { logger }` on the server; derive child loggers per module.
 2. `import { log }` in the browser root; use `log.<level>()`.
 3. Ship code—logging now “just works” with modern, mainstream libraries and 2025 best practices.
 
-[1]: https://betterstack.com/community/guides/logging/how-to-install-setup-and-use-pino-to-log-node-js-applications/?utm_source=chatgpt.com "A Complete Guide to Pino Logging in Node.js - Better Stack"
-[2]: https://github.com/pinojs/pino/issues/632?utm_source=chatgpt.com "Best practices with childs · Issue #632 · pinojs/pino - GitHub"
-[5]: https://github.com/pinojs/pino?utm_source=chatgpt.com "pinojs/pino: super fast, all natural json logger - GitHub"
-[6]: https://github.com/sventschui/pino-transmit-http?utm_source=chatgpt.com "sventschui/pino-transmit-http - GitHub"
-[7]: https://overcast.blog/managing-container-stdout-stderr-logs-like-a-pro-e7d42ab0035e?utm_source=chatgpt.com "Managing Container stdout & stderr Logs Like a Pro | overcast blog"
+
+

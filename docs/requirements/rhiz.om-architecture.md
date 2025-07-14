@@ -63,7 +63,7 @@ This pattern mirrors GitHub, Stripe, Google APIs—giving LLMs maximal prior art
 | **Socket.IO**      | 62 k★; most WebSocket tutorials.                | Pusher/Ably (closed SDK).                        |
 | **Prisma**         | 4 M downloads/wk; TS types.                     | Drizzle 1.4 M.                                   |
 | **PostgreSQL**     | #1 DB in SO 2024 (49 %).                        | MySQL 38 %.                                      |
-| **Winston**        | 15 M downloads/wk, 20 k★.                       | Pino 12 M / 15 k★.                               |
+| **Winston**        | 15 M downloads/wk, 20 k★.                       | (No direct rival listed)                         |
 | **Jest**           | 45 k★; default in older CRA/Next docs.          | Vitest 14 k★.                                    |
 | **Playwright**     | 74 k★; surpassed Cypress.                       | Cypress 49 k★.                                   |
 | **npm Workspaces** | Ships with Node; 55 % dev share.                | pnpm 32 %.                                       |

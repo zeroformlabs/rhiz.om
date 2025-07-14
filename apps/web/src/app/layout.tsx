@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "../components/SessionWrapper";
+import logger from '@rhiz.om/shared/utils/logger';
+
+logger.info("rhiz.om client started");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
