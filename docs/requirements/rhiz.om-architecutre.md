@@ -3,6 +3,7 @@
 **Revision 7 · 14 Jul 2025**
 
 > **[supersedes “Rhiz.om Architecture – Old”]{docs/requirements/rhiz.om-architecture-old.md)**
+> See heritage/ code for early implementation in old architecture, intended for reference for new architecture.
 
 ---
 
@@ -97,31 +98,6 @@ This pattern mirrors GitHub, Stripe, Google APIs—giving LLMs maximal prior art
 * **CI** – Turbo (graph cache) + GitHub Actions → Vercel Preview & Production.
 * **Vercel Hobby limits** – 100 GB bandwidth / 1 M function invocations per month.
 
----
-
-## 6 Migration Plan from **Old Architecture**
-
-| Old tech                         | New tech                       | Migration step                                                                                                                                                                              |
-| -------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Deno 2 runtime & KV**          | **Next.js 15 + PostgreSQL 17** | • Scaffold Next app inside `/apps/web`.<br>• Export data from Deno KV → import into Postgres tables defined in Prisma.<br>• Replace Deno `fetch` handlers with Route Handlers (same paths). |
-| **Vite 7 dev server**            | Built-in Next dev (`next dev`) | Delete `vite.config.*`; Tailwind loaded via `next.config.js`.                                                                                                                               |
-| **Flowbite UI kit**              | **MUI 7 + Tailwind**           | Map Flowbite components → MUI equivalents or rebuild with MUI Base + Tailwind utilities.                                                                                                    |
-| **Auth0 SPA SDK**                | **NextAuth.js**                | Configure `Auth0Provider` in NextAuth; keep Auth0 tenant—only the client changes.                                                                                                           |
-| **Deno Deploy edge host**        | **Vercel Hobby**               | Push repo → import in Vercel; add env vars (`DATABASE_URL`, `NEXTAUTH_SECRET`).                                                                                                             |
-| **Cloudflare R2 blobs**          | Remain **R2** (no change)      | In Route Handler, call existing R2 presign logic via AWS SDK for JS.                                                                                                                        |
-| **Repo layout** (`api/`, `web/`) | **npm workspaces** layout      | Rename `api` code into `apps/web/app/…`; shared code into `packages/shared`.                                                                                                                |
-
-*Phase order*
-
-1. **Repo restructure** with npm workspaces.
-2. Introduce Prisma + Postgres; migrate data.
-3. Replace Deno handlers with Next Route Handlers.
-4. Swap Flowbite components for MUI equivalents.
-5. Configure NextAuth; validate auth flows.
-6. Deploy to Vercel; update DNS.
-7. Remove Deno CI/CD pipelines.
-
-Downtime is limited to DNS TTL—application logic moves incrementally behind feature flags.
 
 ---
 
