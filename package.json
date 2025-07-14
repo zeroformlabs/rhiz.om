@@ -6,9 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=apps/web",
-    "build": "npm run build --workspace=apps/web",
-    "start": "npm run start --workspace=apps/web",
+    "dev": "npm run dev --workspace=@rhiz.om/web",
+    "build": "npm run build --workspace=@rhiz.om/web",
+    "start": "npm run start --workspace=@rhiz.om/web",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present"
   },
