@@ -1,4 +1,6 @@
-# Rhiz.om Architecture — v2025-07-12
+# Rhiz.om Architecture - Old
+
+** This architecture has been subsumed.  It has been decided that we should use technologies with a larger LLM footprint instead of these.  The project will be migrated to the structure in the new architecture.  **
 
 ---
 
