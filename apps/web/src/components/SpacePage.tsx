@@ -1,7 +1,8 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
-import { FaBars, FaComment, FaVideoSlash, FaMicrophoneSlash, FaCog } from "react-icons/fa6";
+import { useSession } from "next-auth/react";
+import { FaBars, FaComment, FaVideoSlash, FaMicrophoneSlash } from "react-icons/fa6";
+import { FaCog } from "react-icons/fa";
 
 export function SpacePage() {
   const { data: session } = useSession();

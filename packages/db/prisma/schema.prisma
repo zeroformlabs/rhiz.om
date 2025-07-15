@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Zod schema generator
+generator zod {
+  provider              = "zod-prisma-types"
+  output                = "../shared/src/zod" // Generate into the shared package for monorepo access
+  createInputTypes      = false               // We only need the core model schemas for now
+  createUpdateTypes     = false
+  addInputTypeValidation= false
+  addIncludeType        = false
+  addSelectType         = false
+  validateRecords       = false
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ## Core Data Model from rhiz.om-data-model.md ##
+
+enum BeingType {
+  USER
+  SPACE
+  DOCUMENT
+  UTTERANCE
+  ERROR
+}
+
+model Being {
+  id         String    @id @default(cuid())
+  name       String
+  type       BeingType
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime  @updatedAt
+
+  // Relational fields
+  ownerId      String?   // <-- MAKE THIS OPTIONAL
+  owner        Being?    @relation("OwnedBeings", fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction) // <-- MAKE THIS OPTIONAL
+  ownedBeings  Being[]   @relation("OwnedBeings")
+  locationId   String?
+  location     Being?    @relation("LocatedBeings", fields: [locationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  locatedBeings Being[]  @relation("LocatedBeings")
+
+  // Fields for Intentions
+  state String?
+
+  // Polymorphic content and metadata (using JSON type)
+  extIds     Json?
+  idHistory  Json?
+  metadata   Json?
+  properties Json?
+  content    Json?
+
+  // Relation to NextAuth User
+  user User?
+}
+
+// ## NextAuth.js Models ##
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // Link to the primary Being for this User
+  beingId String? @unique
+  being   Being?  @relation(fields: [beingId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
